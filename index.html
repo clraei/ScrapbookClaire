@@ -34,7 +34,7 @@
 
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+      50% { transform: translateY(-25px); }
     }
 
     .progress {
@@ -54,15 +54,14 @@
 </head>
 <body>
   <div class="loader">
-    <div class="emoji" id="emoji">🎀</div>
+    <img class="emoji" loading="lazy" sizes="250px" srcset="https://64.media.tumblr.com/bac57293a90a242a66eb544d60bb4a3f/b14bec91d15efe4c-b7/s100x200/8d557ced1bc8ea3570b24bed580a802a25b78222.gifv 100w, https://64.media.tumblr.com/bac57293a90a242a66eb544d60bb4a3f/b14bec91d15efe4c-b7/s250x400/c7b006a109f728848b71cceade3560570f3b15f3.gifv 250w"></div>
     <div class="my-name">Claire Roxanne Petrina</div>
     <div class="loading-text">Calling Jaime Preciado to see your scrapbook...</div>
     <div class="progress w-75 mx-auto">
       <div id="progressBar" 
-           class="progress-bar progress-bar-striped progress-bar-animated bg-warning" 
+           class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
            role="progressbar" style="width: 0%">0%</div>
     </div>
-  </div>
 
   <script>
     let progress = 0;
