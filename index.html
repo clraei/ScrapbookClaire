@@ -21,15 +21,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #FFF5F2;
+      background: url('https://i.pinimg.com/originals/4e/b6/21/4eb6218fda3830bd738de4ed85333474.gif');
+      background-size: cover;
       font-family: 'Comic Sans MS', cursive;
       flex-direction: column;
+      overflow: hidden;
     }
 
     .emoji {
-      font-size: 50px;
       animation: bounce 1s infinite;
       display: inline-block;
+      object-fit: contain;
     }
 
     @keyframes bounce {
@@ -50,20 +52,51 @@
       margin-bottom: -5px;
       color: #555;
     }
+
+    .falling-gifs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .fall {
+      position: absolute;
+      top: -80px;
+      animation-name: fall;
+      animation-timing-function: linear;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0.8;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="loader">
-    <img class="emoji" loading="lazy" sizes="250px" srcset="https://64.media.tumblr.com/bac57293a90a242a66eb544d60bb4a3f/b14bec91d15efe4c-b7/s100x200/8d557ced1bc8ea3570b24bed580a802a25b78222.gifv 100w, https://64.media.tumblr.com/bac57293a90a242a66eb544d60bb4a3f/b14bec91d15efe4c-b7/s250x400/c7b006a109f728848b71cceade3560570f3b15f3.gifv 250w"></div>
-    <div class="my-name">Claire Roxanne Petrina</div>
-    <div class="loading-text">Calling Jaime Preciado to see your scrapbook...</div>
-    <div class="progress w-75 mx-auto">
-      <div id="progressBar" 
-           class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
-           role="progressbar" style="width: 0%">0%</div>
-    </div>
+    <img class="emoji" id="emoji" 
+         src="https://64.media.tumblr.com/bac57293a90a242a66eb544d60bb4a3f/b14bec91d15efe4c-b7/s100x200/8d557ced1bc8ea3570b24bed580a802a25b78222.gifv" 
+         alt="bouncing icon">
+  </div>
+  <div class="my-name">Claire Roxanne Petrina</div>
+  <div class="loading-text">Calling Jaime Preciado to see your scrapbook...</div>
+  <div class="progress w-75 mx-auto">
+    <div id="progressBar" 
+         class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+         role="progressbar" style="width: 0%">0%</div>
+  </div>
+
+  <div class="falling-gifs"></div>
 
   <script>
+   
     let progress = 0;
     const progressBar = document.getElementById("progressBar");
     const duration = 7500;
@@ -72,7 +105,7 @@
 
     const timer = setInterval(() => {
       progress += step;
-      if (progress >= 100) {
+      if (progress >= 100) { 
         progress = 100;
         clearInterval(timer);
         window.location.href = "home.html";
@@ -80,6 +113,38 @@
       progressBar.style.width = progress + "%";
       progressBar.innerText = Math.floor(progress) + "%";
     }, interval);
+
+    const emoji = document.getElementById("emoji");
+    const icons = [
+      "https://64.media.tumblr.com/bac57293a90a242a66eb544d60bb4a3f/b14bec91d15efe4c-b7/s100x200/8d557ced1bc8ea3570b24bed580a802a25b78222.gifv",
+      "https://64.media.tumblr.com/2257e014ee7a77ba3e00bb70c408f47a/bb4279bbe470942a-fd/s100x200/3dcf57983c4e71b7b3aa2006bb152d68cbf4c1d0.gifv"
+    ];
+    let current = 0;
+
+    emoji.addEventListener("animationiteration", () => {
+      current = (current + 1) % icons.length;
+      emoji.src = icons[current];
+    });
+const gifs = [
+      "https://64.media.tumblr.com/98e1637e26c163b886810a2ef3f9f850/49c721c8dad77379-05/s250x400/3f791378d531a7cdda62f35400cd228758937353.gif",
+      "https://i.redd.it/fa7yzfkz14u71.gif",
+      "https://cdn.pixabay.com/animation/2024/09/02/01/05/01-05-18-493_512.gif"
+    ];
+
+    function createFallingGif() {
+      const gif = document.createElement("img");
+      gif.src = gifs[Math.floor(Math.random() * gifs.length)];
+      gif.classList.add("fall");
+
+      gif.style.left = Math.random() * 100 + "vw";
+      gif.style.width = (30 + Math.random() * 40) + "px";
+      gif.style.animationDuration = (5 + Math.random() * 5) + "s";
+
+      document.querySelector(".falling-gifs").appendChild(gif);
+      setTimeout(() => gif.remove(), 10000);
+    }
+
+    setInterval(createFallingGif, 500);
   </script>
 </body>
 </html>
